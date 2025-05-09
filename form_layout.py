@@ -7,9 +7,27 @@ def get_layout():
     return html.Div([
         html.H1("MetaVision Data Processing", className="app-title"),
         
+        # File Upload Section
+        html.Div([
+            html.H3("Step 1: Upload Data", className="section-title"),
+            dcc.Upload(
+                id='upload-data',
+                children=html.Div([
+                    html.Div(className='upload-icon'),
+                    html.Div('Drag and Drop or', className='upload-text'),
+                    html.Button('Select CSV File', className='upload-button')
+                ], className='upload-content'),
+                multiple=False,
+                className='file-upload'
+            ),
+            html.Div(id='upload-output', className='upload-output'),
+        ], className='form-section'),
+        
+        html.Hr(className="section-divider"),
+        
         # Interpolate Section
         html.Div([
-            html.H3("Step 1: Interpolate", className="section-title"),
+            html.H3("Step 2: Interpolate", className="section-title"),
             dcc.Checklist(
                 id='interpolate-checkbox',
                 options=[{'label': 'Run Interpolation', 'value': 'interpolate'}],
@@ -32,7 +50,7 @@ def get_layout():
         
         # Impute Section
         html.Div([
-            html.H3("Step 2: Impute", className="section-title"),
+            html.H3("Step 3: Impute", className="section-title"),
             dcc.Checklist(
                 id='impute-checkbox',
                 options=[{'label': 'Run Imputation', 'value': 'impute'}],
@@ -59,4 +77,3 @@ def get_layout():
         ], className="button-container"),
         
     ], className="app-container")
-    
