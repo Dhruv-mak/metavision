@@ -1,8 +1,8 @@
 from dash import Dash, html, dcc
-from form_layout import get_layout
+from form.form_layout import get_layout
 import logging
 import dash
-from form_callback import register_form_callback
+from form.form_callback import register_form_callback
 
 logger = logging.getLogger(__name__)
 app = Dash()
