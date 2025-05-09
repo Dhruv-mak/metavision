@@ -1,0 +1,226 @@
+/* Export Tab Styling for MetaVision */
+
+/* Export Layout */
+.export-layout {
+  width: 100%;
+}
+
+/* Common elements */
+.export-label {
+  font-weight: 500;
+  color: var(--secondary-text);
+  margin-right: 15px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Normalization Section */
+.normalization-section {
+  margin-bottom: 20px;
+}
+
+.normalization-controls {
+  display: flex;
+  align-items: center;
+}
+
+.radio-container {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.normalization-radio .form-check-input {
+  accent-color: var(--primary);
+  margin-right: 5px;
+}
+
+.normalization-radio .form-check-label {
+  margin-right: 30px;
+}
+
+/* Selection Columns */
+.selection-columns-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.selection-column {
+  width: 48%;
+  background-color: var(--dark-surface-2);
+  border-radius: var(--border-radius);
+  padding: 15px;
+  border: 1px solid #333;
+}
+
+.column-header {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #333;
+  padding-bottom: 10px;
+}
+
+.count-label {
+  color: var(--secondary-text);
+  margin-right: 5px;
+}
+
+.count-value {
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.select-all-checkbox {
+  display: inline-block;
+}
+
+.select-all-checkbox .form-check-label {
+  font-weight: 500;
+  color: var(--light-text);
+}
+
+.checklist-container {
+  max-height: 200px;
+  overflow-y: auto;
+  border-radius: 4px;
+  background-color: var(--dark-surface);
+  padding: 10px;
+}
+
+.item-checklist .form-check {
+  margin-bottom: 8px;
+}
+
+.item-checklist .form-check-input {
+  accent-color: var(--primary);
+  margin-right: 10px;
+}
+
+/* Export Format Section */
+.export-format-section {
+  margin-bottom: 20px;
+}
+
+.format-controls {
+  display: flex;
+  align-items: center;
+}
+
+.export-format-radio .form-check-input {
+  accent-color: var(--primary);
+  margin-right: 5px;
+}
+
+.export-format-radio .form-check-label {
+  margin-right: 30px;
+}
+
+/* Directory Section */
+.directory-section {
+  margin-bottom: 20px;
+}
+
+.directory-controls {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.directory-input {
+  flex: 1;
+  border: 1px solid #444;
+  padding: 10px 15px;
+  border-radius: var(--border-radius);
+  background-color: var(--dark-surface-2);
+  color: var(--light-text);
+  margin-right: 10px;
+}
+
+.directory-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(0, 188, 212, 0.2);
+}
+
+.browse-button, .export-button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: var(--transition);
+  font-weight: 500;
+  width: 100px;
+  margin-left: 10px;
+}
+
+.browse-button {
+  background-color: var(--dark-surface-2);
+  color: var(--light-text);
+  border: 1px solid #444;
+}
+
+.browse-button:hover {
+  background-color: var(--dark-surface);
+  border-color: var(--primary);
+}
+
+.export-button {
+  background-color: var(--accent);
+  color: white;
+  box-shadow: 0 2px 4px rgba(236, 64, 122, 0.3);
+}
+
+.export-button:hover {
+  background-color: #d81b60;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(236, 64, 122, 0.4);
+}
+
+.export-status {
+  margin-top: 15px;
+  min-height: 24px;
+  color: var(--primary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .normalization-controls,
+  .format-controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .export-label {
+    margin-bottom: 10px;
+  }
+  
+  .selection-columns-container {
+    flex-direction: column;
+  }
+  
+  .selection-column {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  .directory-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .directory-input {
+    margin-bottom: 10px;
+    margin-right: 0;
+  }
+  
+  .browse-button,
+  .export-button {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 5px;
+  }
+}

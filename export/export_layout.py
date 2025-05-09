@@ -8,10 +8,7 @@ def get_export_layout():
         # Normalization Selection with options inline
         html.Div([
             html.Div([
-                html.Label("Select Normalization:", 
-                          className="export-label", 
-                          style={'display': 'inline-block', 'marginRight': '20px', 'fontWeight': 'bold', 'verticalAlign': 'middle'}),
-                          
+                html.Label("Select Normalization:", className="export-label"),
                 html.Div([
                     dcc.RadioItems(
                         id='normalization-select',
@@ -20,14 +17,12 @@ def get_export_layout():
                             {'label': 'Total Sum Normalization', 'value': 'total_sum_norm'}
                         ],
                         value='none',
-                        inline=True, 
-                        inputStyle={"marginRight": "5px"},
-                        labelStyle={"marginRight": "30px"},
+                        inline=True,
                         className="normalization-radio"
                     )
-                ], style={'display': 'inline-block', 'verticalAlign': 'middle'})
-            ])
-        ], className="normalization-section"),
+                ], className="radio-container")
+            ], className="normalization-controls")
+        ], className="form-section normalization-section"),
         
         html.Hr(className="section-divider"),
         
@@ -59,8 +54,8 @@ def get_export_layout():
                         value=[],
                         className="item-checklist"
                     )
-                ], className="column-content", style={'maxHeight': '200px', 'overflowY': 'auto'})
-            ], className="selection-column", style={'width': '48%'}),
+                ], className="column-content checklist-container")
+            ], className="selection-column"),
             
             # Second Column (Numbers)
             html.Div([
@@ -88,9 +83,9 @@ def get_export_layout():
                         value=[],
                         className="item-checklist"
                     )
-                ], className="column-content", style={'maxHeight': '200px', 'overflowY': 'auto'})
-            ], className="selection-column", style={'width': '48%'}),
-        ], className="selection-columns-container", style={'display': 'flex', 'justifyContent': 'space-between'}),
+                ], className="column-content checklist-container")
+            ], className="selection-column"),
+        ], className="selection-columns-container"),
         
         html.Hr(className="section-divider"),
         
@@ -99,9 +94,7 @@ def get_export_layout():
             # CSV Format Selection
             html.Div([
                 html.Div([
-                    html.Label("Export Format:", className="export-label", 
-                              style={'display': 'inline-block', 'marginRight': '15px', 'fontWeight': 'bold', 'verticalAlign': 'middle'}),
-                    
+                    html.Label("Export Format:", className="export-label"),
                     dcc.RadioItems(
                         id='export-format',
                         options=[
@@ -110,67 +103,35 @@ def get_export_layout():
                         ],
                         value='single',
                         inline=True,
-                        inputStyle={"marginRight": "5px"},  
-                        labelStyle={"marginRight": "30px"}, 
-                        className="export-format-radio",
-                        style={'display': 'inline-block', 'verticalAlign': 'middle'}
+                        className="export-format-radio"
                     )
-                ])
-            ], className="export-format-section", style={'marginBottom': '20px'}), 
+                ], className="format-controls")
+            ], className="export-format-section"),
             
-            # Directory Selection with Browse and Export on the same line
+            # Directory Selection with Browse and Export buttons
             html.Div([
                 html.Div([
-                    html.Label("Output Directory:", 
-                              className="export-label", 
-                              style={
-                                  'display': 'inline-block', 
-                                  'width': '150px',
-                                  'fontWeight': 'bold', 
-                                  'verticalAlign': 'middle'
-                              }),
-                    
+                    html.Label("Output Directory:", className="export-label"),
                     dcc.Input(
                         id='output-directory',
                         type='text',
                         placeholder="Select output directory...",
-                        className="directory-input",
-                        style={
-                            'display': 'inline-block',
-                            'width': 'calc(100% - 420px)',  
-                            'verticalAlign': 'middle'
-                        }
+                        className="directory-input"
                     ),
-                    
-                    # Browse button
                     html.Button(
                         "Browse...",
                         id="browse-button",
-                        className="browse-button",
-                        style={
-                            'display': 'inline-block',
-                            'marginLeft': '10px',
-                            'width': '100px',
-                            'verticalAlign': 'middle'
-                        }
+                        className="browse-button"
                     ),
-                    
-                    # Export button
                     html.Button(
                         "Export",
                         id="export-button",
-                        className="export-button",
-                        style={
-                            'display': 'inline-block',
-                            'marginLeft': '10px',
-                            'width': '100px',
-                            'verticalAlign': 'middle'
-                        }
+                        className="export-button"
                     ),
-                ], style={'display': 'flex', 'alignItems': 'center', 'width': '100%'})
+                ], className="directory-controls")
             ], className="directory-section"),
             
             # Status message area
-            html.Div(id="export-status", className="export-status", style={'marginTop': '15px'})
-        ], className="export-options")
+            html.Div(id="export-status", className="export-status")
+        ], className="form-section export-options")
     ], className="export-layout")

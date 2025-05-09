@@ -6,4 +6,7 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "dash>=3.0.4",
+    "flask-caching>=2.3.1",
+    "pandas>=2.2.3",
+    "pydantic>=2.11.4",
 ]

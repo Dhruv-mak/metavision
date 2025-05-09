@@ -2,6 +2,13 @@ from dash import Dash, html, dcc
 from form.form_layout import get_layout
 import logging
 import dash
+import uuid
+import os
+import secrets
+from flask import session, g
+from flask_caching import Cache
+from utils import janitor
+import threading
 from form.form_callback import register_form_callback
 from visualization.visualization_layout import get_visualization_layout
 from export.export_layout import get_export_layout
@@ -9,8 +16,34 @@ from export.export_layout import get_export_layout
 logger = logging.getLogger(__name__)
 app = Dash()
 server = app.server
+server.secret_key = secrets.token_hex(16)
+
 app.config.suppress_callback_exceptions = True
 app.title = "MetaVision Data Processing"
+threading.Thread(target=janitor, daemon=True).start()
+
+CACHE_CONFIG = {
+    "CACHE_TYPE": "simple",
+    "CACHE_DEFAULT_TIMEOUT": 60 * 60,
+}
+
+cache = Cache(app.server, config=CACHE_CONFIG)
+
+
+@server.before_request
+def ensure_user_workspace():
+    """Ensure that the user workspace exists."""
+    if "session_id" not in session:
+        session["session_id"] = uuid.uuid4().hex
+    os.mkdir("workspaces") if not os.path.exists("workspaces") else None    
+    user_id = session["session_id"]
+    work_dir = os.path.join("workspaces", user_id)
+    if not os.path.exists(work_dir):
+        # Create the directory if it doesn't exist
+        logger.info(f"Creating workspace directory: {work_dir}")
+        os.makedirs(work_dir, exist_ok=True)
+    
+    g.work_dir = work_dir
 
 app.layout = html.Div([
     html.H1("MetaVision Data Processing", className="app-title"),
