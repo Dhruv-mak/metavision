@@ -3,7 +3,8 @@ from form.form_layout import get_layout
 import logging
 import dash
 from form.form_callback import register_form_callback
-from results_layout import get_results_layout, get_visualization_layout, get_export_layout
+from visualization.visualization_layout import get_visualization_layout
+from export.export_layout import get_export_layout
 
 logger = logging.getLogger(__name__)
 app = Dash()
@@ -17,7 +18,8 @@ app.layout = html.Div([
     # Tabs
     dcc.Tabs(id="tabs", value="parameters", children=[
         dcc.Tab(label="Parameters", value="parameters", className="tab"),
-        dcc.Tab(label="Results", value="results", className="tab"),
+        dcc.Tab(label="Visualization", value="visualization", className="tab"),
+        dcc.Tab(label="Export", value="export", className="tab"),
     ], className="tabs"),
     html.Div(id="tabs-content", className="tab-content"),
     ])
@@ -29,32 +31,18 @@ app.layout = html.Div([
 def render_tab(tab):
     if tab == "parameters":
         return get_layout()
-    elif tab == "results":
-        return get_results_layout()
+    elif tab == "visualization":
+        return get_visualization_layout()
+    elif tab == "export":
+        return get_export_layout()
     else:
         return html.Div([
             html.H3("Error", className="error-text"),
             html.P("Invalid tab selected.", className="error-message")
         ])
-
-# Add a callback for the results sub-tabs
-@app.callback(
-    dash.dependencies.Output("results-subtab-content", "children"),
-    [dash.dependencies.Input("results-subtabs", "value")]
-)
-def render_results_subtab(subtab):
-    if subtab == "visualization":
-        return get_visualization_layout()
-    elif subtab == "export":
-        return get_export_layout()
-    else:
-        return html.Div([
-            html.P("Invalid sub-tab selected.", className="error-message")
-        ])
             
 # Registering the callback for the tabs
 register_form_callback(app)
-
 
 if __name__ == "__main__":
     app.run(debug=True)
