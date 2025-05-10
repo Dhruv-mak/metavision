@@ -1,4 +1,4 @@
-from dash import Dash, html, dcc
+from dash import Dash, html, dcc, State, Input, Output
 from form.form_layout import get_layout
 import logging
 import dash
@@ -66,16 +66,29 @@ app.layout = html.Div([
     ])
 
 @app.callback(
-    dash.dependencies.Output("tabs-content", "children"),
-    [dash.dependencies.Input("tabs", "value")]
+    Output("tabs-content", "children"),
+    Input("tabs", "value"),
+    State("processed", "data"),
 )
-def render_tab(tab):
+def render_tab(tab, processed):
     if tab == "parameters":
         return get_layout()
     elif tab == "visualization":
-        return get_visualization_layout()
+        if not processed:
+            return html.Div([
+                html.H3("Error", className="error-text"),
+                html.P("Please process the data before visualizing.", className="error-message")
+            ])
+        else:
+            return get_visualization_layout()
     elif tab == "export":
-        return get_export_layout()
+        if not processed:
+            return html.Div([
+                html.H3("Error", className="error-text"),
+                html.P("Please process the data before exporting.", className="error-message")
+            ])
+        else:
+            return get_export_layout(cache)
     else:
         return html.Div([
             html.H3("Error", className="error-text"),
