@@ -12,8 +12,13 @@ import threading
 from form.form_callback import register_form_callback
 from visualization.visualization_layout import get_visualization_layout
 from export.export_layout import get_export_layout
+from config import setup_logger
 
-logger = logging.getLogger(__name__)
+# Initialize the root logger once
+setup_logger(log_level=logging.INFO, log_dir="logs", name="metavision")
+# Get a reference to that logger
+logger = logging.getLogger("metavision")
+
 app = Dash()
 server = app.server
 server.secret_key = secrets.token_hex(16)
@@ -55,6 +60,8 @@ app.layout = html.Div([
         dcc.Tab(label="Export", value="export", className="tab"),
     ], className="tabs"),
     html.Div(id="tabs-content", className="tab-content"),
+    dcc.Store(id="processed", data=False),
+    dcc.Store(id="molecule")
     ])
 
 @app.callback(
@@ -75,7 +82,7 @@ def render_tab(tab):
         ])
             
 # Registering the callback for the tabs
-register_form_callback(app)
+register_form_callback(app, cache)
 
 if __name__ == "__main__":
     app.run(debug=True)
