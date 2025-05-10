@@ -16,8 +16,6 @@ def get_3d_image_layout():
                 ],
                 value='original',
                 inline=True,
-                labelStyle={ 'margin': '5px'},
-                inputStyle={'marginRight': '5px'},
                 className="radio-group"
             )
         ], className="control-group"),
@@ -28,44 +26,41 @@ def get_3d_image_layout():
             html.Div([
                 # Thickness control
                 html.Div([
-                    html.Label("Thickness:", 
-                            style={'marginRight': '8px', 'display': 'inline-block', 'whiteSpace': 'nowrap'}),
+                    html.Label("Thickness:", className="compact-label"),
                     dcc.Dropdown(
                         id='thickness-value',
                         options=[{'label': str(i), 'value': i} for i in range(1, 11)],
                         value=1,
                         clearable=False,
-                        style={'width': '60px', 'display': 'inline-block'}
+                        className="compact-dropdown"
                     ),
-                ], style={'display': 'inline-flex', 'alignItems': 'center', 'marginRight': '20px'}),
+                ], className="compact-control"),
                 
                 # Gap control
                 html.Div([
-                    html.Label("Gap:", 
-                            style={'marginRight': '8px', 'display': 'inline-block', 'whiteSpace': 'nowrap'}),
+                    html.Label("Gap:", className="compact-label"),
                     dcc.Dropdown(
                         id='gap-value',
                         options=[{'label': str(i), 'value': i} for i in range(10)],
                         value=0,
                         clearable=False,
-                        style={'width': '60px', 'display': 'inline-block'}
+                        className="compact-dropdown"
                     ),
-                ], style={'display': 'inline-flex', 'alignItems': 'center', 'marginRight': '20px'}),
+                ], className="compact-control"),
                 
                 # Maximum projection control
                 html.Div([
-                    html.Label("Maximum Projection:", 
-                            style={'marginRight': '8px', 'display': 'inline-block', 'whiteSpace': 'nowrap'}),
+                    html.Label("Maximum Projection:", className="compact-label"),
                     dcc.Dropdown(
                         id='max-projection-value',
                         options=[{'label': str(i), 'value': i} for i in range(100, 0, -1)],
                         value=99,
                         clearable=False,
-                        style={'width': '60px', 'display': 'inline-block'}
+                        className="compact-dropdown"
                     ),
-                ], id="max-projection-container", style={'display': 'inline-flex', 'alignItems': 'center'}),
-            ], style={'display': 'flex', 'alignItems': 'center', 'flexWrap': 'wrap'}),
-        ], style={'marginTop': '15px'}),
+                ], id="max-projection-container", className="compact-control"),
+            ], className="compact-controls-row"),
+        ], className="compact-controls-container"),
 
         # Buttons for viewing in 3D and saving
         html.Div([
@@ -77,15 +72,13 @@ def get_3d_image_layout():
             html.Button(
                 "Save 3D Image",
                 id="save-3d-button",
-                className="action-button secondary-button",
-                style={"marginLeft": "10px"}
+                className="action-button secondary-button"
             ),
-        ], className="button-container", style={'marginTop': '20px'}),
+        ], className="button-container"),
         
         # Hidden div for folder picker dialog results
-        html.Div(id="folder-picker-output", style={"display": "none"}),
+        html.Div(id="folder-picker-output", className="hidden-element"),
         
         # Container for the 3D visualization
-        html.Div(id="3d-visualization-container", className="visualization-result", 
-                 style={'marginTop': '20px'})
+        html.Div(id="3d-visualization-container", className="visualization-result")
     ], className="visualization-3d-options")

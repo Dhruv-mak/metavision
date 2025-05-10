@@ -1,0 +1,188 @@
+/* Visualization Layout Styling for MetaVision */
+
+/* Main visualization container */
+.visualization-layout {
+  width: 100%;
+}
+
+.visualization-controls {
+  background-color: var(--dark-surface);
+  padding: 25px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  border: 1px solid #333;
+}
+
+.visualization-controls:hover {
+  box-shadow: var(--glow);
+  border-color: rgba(0, 188, 212, 0.3);
+}
+
+/* Dropdown row container */
+.dropdowns-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+/* Individual dropdown container */
+.dropdown-container {
+  flex: 1;
+}
+
+/* Dropdown labels */
+.dropdown-label {
+  display: block;
+  font-weight: 500;
+  color: var(--secondary-text);
+  margin-bottom: 8px;
+}
+
+/* Dash dropdown styling */
+.dropdown .Select-control {
+  background-color: var(--dark-surface-2);
+  border: 1px solid #444;
+  border-radius: var(--border-radius);
+  color: var(--light-text);
+  transition: var(--transition);
+}
+
+.dropdown .Select-control:hover {
+  border-color: var(--primary);
+}
+
+.dropdown .Select-menu-outer {
+  background-color: var(--dark-surface-2);
+  border: 1px solid #444;
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+
+.dropdown .Select-value-label {
+  color: var(--light-text) !important;
+}
+
+.dropdown .Select-placeholder {
+  color: var(--secondary-text);
+}
+
+.dropdown .Select-option {
+  background-color: var(--dark-surface-2);
+  color: var(--light-text);
+}
+
+.dropdown .Select-option.is-selected {
+  background-color: var(--primary);
+}
+
+.dropdown .Select-option.is-focused {
+  background-color: var(--dark-surface);
+}
+
+/* Visualization output container */
+.visualization-container {
+  margin-top: 25px;
+  min-height: 100px;
+}
+
+/* Instruction text styling */
+.instruction-text {
+  padding: 20px;
+  background-color: var(--dark-surface-2);
+  border-radius: var(--border-radius);
+  color: var(--secondary-text);
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+/* Action Buttons for 3D view */
+.action-button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: var(--transition);
+  font-weight: 500;
+}
+
+.primary-button {
+  background-color: var(--accent);
+  color: white;
+  box-shadow: 0 2px 4px rgba(236, 64, 122, 0.3);
+}
+
+.primary-button:hover {
+  background-color: #d81b60;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(236, 64, 122, 0.4);
+}
+
+.secondary-button {
+  background-color: var(--dark-surface-2);
+  color: var(--light-text);
+  border: 1px solid #444;
+}
+
+.secondary-button:hover {
+  background-color: var(--dark-surface);
+  border-color: var(--primary);
+}
+
+.button-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Control groups for 3D options */
+.visualization-3d-options {
+  background-color: var(--dark-surface-2);
+  padding: 20px;
+  border-radius: var(--border-radius);
+  margin-top: 20px;
+}
+
+.control-label {
+  font-weight: 500;
+  color: var(--secondary-text);
+  margin-right: 15px;
+}
+
+.control-group {
+  margin-bottom: 15px;
+}
+
+.radio-group {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Visualization results */
+.visualization-result {
+  padding: 20px;
+  background-color: var(--dark-surface-2);
+  border-radius: var(--border-radius);
+  margin-top: 20px;
+  border-left: 4px solid var(--primary);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .dropdowns-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .dropdown-container {
+    width: 100%;
+  }
+  
+  .button-container {
+    flex-direction: column;
+  }
+  
+  .action-button {
+    width: 100%;
+  }
+}

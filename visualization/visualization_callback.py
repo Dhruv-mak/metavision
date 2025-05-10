@@ -8,7 +8,7 @@ from visualization.threed_layout import get_3d_image_layout
     Input("visualization-type", "value"),
     Input("column-selector", "value")
 )
-def update_visualization(viz_type, column):
+def register_visualization_callback(viz_type, column):
     if not viz_type:
         return html.Div("Please select a visualization type.", className="instruction-text")
     
