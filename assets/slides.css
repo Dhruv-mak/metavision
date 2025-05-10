@@ -1,0 +1,149 @@
+/* Slides Layout Styling */
+.slides-layout {
+  width: 100%;
+}
+
+/* Controls for colormap */
+.slides-controls {
+  background-color: var(--dark-surface-2);
+  padding: 15px;
+  border-radius: var(--border-radius);
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  border: 1px solid #333;
+}
+
+.control-label {
+  font-weight: 500;
+  color: var(--secondary-text);
+  margin-right: 15px;
+}
+
+.colormap-radio .form-check-input {
+  accent-color: var(--primary);
+  margin-right: 5px;
+}
+
+.colormap-radio .form-check-label {
+  margin-right: 20px;
+}
+
+/* Main content area with thumbnails and selected image */
+.slides-content {
+  display: flex;
+  gap: 20px;
+  min-height: 400px;
+}
+
+/* Thumbnails column */
+.thumbnails-column {
+  width: 40%;
+  background-color: var(--dark-surface-2);
+  border-radius: var(--border-radius);
+  padding: 15px;
+  max-height: 600px;
+  overflow-y: auto;
+  border: 1px solid #333;
+}
+
+/* Selected image column */
+.selected-column {
+  flex-grow: 1;
+  background-color: var(--dark-surface-2);
+  border-radius: var(--border-radius);
+  padding: 15px;
+  border: 1px solid #333;
+}
+
+/* Grid layout for thumbnails */
+.thumbnails-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 15px;
+  place-content: start;
+}
+
+/* Individual thumbnail container */
+.thumbnail-container {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  background-color: var(--dark-surface);
+  transition: var(--transition);
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.thumbnail-container:hover {
+  border-color: var(--primary-light);
+  box-shadow: var(--glow);
+  transform: scale(1.03);
+}
+
+.thumbnail-container.selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+/* Thumbnail labels */
+.thumbnail-label {
+  text-align: center;
+  padding: 5px;
+  font-size: 0.85rem;
+  color: var(--secondary-text);
+  border-top: 1px solid #333;
+}
+
+/* Graph styling */
+.slide-thumbnail {
+  width: 100%;
+  height: 100px;
+}
+
+/* Selected slide container */
+.selected-slide-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Instruction text when no slide is selected */
+.select-instruction {
+  color: var(--secondary-text);
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+/* Selected slide graph */
+.selected-slide-graph {
+  width: 100%;
+  height: 500px;
+}
+
+/* Loading spinner customization */
+._dash-loading {
+  color: var(--primary) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .slides-content {
+    flex-direction: column;
+  }
+  
+  .thumbnails-column,
+  .selected-column {
+    width: 100%;
+  }
+  
+  .thumbnails-column {
+    max-height: 300px;
+  }
+  
+  .selected-slide-graph {
+    height: 350px;
+  }
+}

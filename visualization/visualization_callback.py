@@ -2,6 +2,7 @@
 
 from dash import Input, Output, State, callback, html
 from visualization.threed_layout import get_3d_image_layout
+from visualization.slides_layout import get_slides_layout
 
 @callback(
     Output("visualization-output", "children"),
@@ -19,7 +20,7 @@ def register_visualization_callback(viz_type, column):
         return get_3d_image_layout()
     elif viz_type == "slides":
         # Return slides visualization layout
-        return html.Div("Slides visualization will appear here")
+        return get_slides_layout()
     elif viz_type == "normplot":
         # Return normplot visualization layout
         return html.Div("Norm Plot visualization will appear here")
