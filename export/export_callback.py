@@ -100,5 +100,11 @@ def register_export_callback(app, cache):
 
             # Return the zip file for download
             return [dcc.send_bytes(buffer.getvalue(), f"tissues_export.zip")]
+        else:
+            export_df = filtered_df[['tissue_id'] + selected_molecules]
+            buffer = io.StringIO()
+            export_df.to_csv(buffer, index=False)
+            buffer.seek(0)
+            return [dcc.send_data_frame(buffer.getvalue(), "export.csv")]
                 
                 
