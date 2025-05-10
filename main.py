@@ -81,7 +81,7 @@ def render_tab(tab, processed):
                 html.P("Please process the data before visualizing.", className="error-message")
             ])
         else:
-            return get_visualization_layout()
+            return get_visualization_layout(cache)
     elif tab == "export":
         if not processed:
             return html.Div([
