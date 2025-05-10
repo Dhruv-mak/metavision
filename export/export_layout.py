@@ -18,6 +18,8 @@ def get_export_layout():
                         ],
                         value='none',
                         inline=True,
+                        inputStyle={"marginRight": "5px"},
+                        labelStyle={"marginRight": "30px"},
                         className="normalization-radio"
                     )
                 ], className="radio-container")
@@ -103,6 +105,8 @@ def get_export_layout():
                         ],
                         value='single',
                         inline=True,
+                        inputStyle={"marginRight": "5px"},
+                        labelStyle={"marginRight": "30px"},
                         className="export-format-radio"
                     )
                 ], className="format-controls")

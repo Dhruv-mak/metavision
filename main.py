@@ -18,6 +18,7 @@ from config import setup_logger
 setup_logger(log_level=logging.INFO, log_dir="logs", name="metavision")
 # Get a reference to that logger
 logger = logging.getLogger("metavision")
+from visualization.visualization_callback import update_visualization
 
 app = Dash()
 server = app.server
@@ -83,6 +84,9 @@ def render_tab(tab):
             
 # Registering the callback for the tabs
 register_form_callback(app, cache)
+register_form_callback(app)
+# Registering the callback for visualization
+update_visualization(app, 'molecule1')
 
 if __name__ == "__main__":
     app.run(debug=True)
