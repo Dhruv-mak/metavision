@@ -150,5 +150,7 @@ def get_export_layout(cache):
             
             # Status message area
             html.Div(id="export-status", className="export-status")
-        ], className="form-section export-options")
+        ], className="form-section export-options"),
+        
+        dcc.Download(id="download-data")
     ], className="export-layout")
