@@ -1,10 +1,12 @@
 from dash import html, dcc
+from flask import session
 
-def get_visualization_layout():
+def get_visualization_layout(cache):
     """
     Returns the layout for the Visualization sub-tab with two dropdowns arranged side by side.
     The column dropdown will be populated dynamically via a callback.
     """
+    molecule_list = cache.get(f"{session['session_id']}:molecules_list")
     return html.Div([
         html.Div([
             # Container for side-by-side dropdowns
@@ -31,10 +33,7 @@ def get_visualization_layout():
                     dcc.Dropdown(
                         id='column-selector',
                         options=[
-                            {'label': 'molecule 1', 'value': 'molecule1'},
-                            {'label': 'molecule 2', 'value': 'molecule2'},
-                            {'label': 'molecule 3', 'value': 'molecule3'},
-                            {'label': 'molecule 4', 'value': 'molecule4'},
+                            {'label': molecule, 'value': molecule} for molecule in molecule_list
                         ],
                         placeholder="Select a molecule/tissue",
                         className="dropdown"
