@@ -39,12 +39,14 @@ def register_export_callback(app, cache):
 
     @app.callback(
         [Output("download-data", "data")],
+        [Input("export-button", "n_clicks")],
         [
-            Input("select-all-molecules", "value"),
-            Input("molecule-checklist", "value"),
-            Input("normalization-select", "value"),
-            Input("export-format", "value")
+            State("select-all-molecules", "value"),
+            State("molecule-checklist", "value"),
+            State("normalization-select", "value"),
+            State("export-format", "value")
         ],
+        
     )
     def export_file(select_all_check, checked_molecules, normalization, export):
         logger.info("Exporting file...")
