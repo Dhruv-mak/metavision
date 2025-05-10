@@ -8,12 +8,12 @@ logger = logging.getLogger("metavision")
 def register_export_callback(app, cache):
     @app.callback(
         Output("tissues-selected-count", "children"),
-        [Input("tissue-checklist", "value")],
+        Input("tissues-checklist", "value"),
     )
     def update_tissues_count(selected_tissues):
-        logger.info(f"Selected tissues: {selected_tissues}")
+        logger.debug(f"Selected tissues: {selected_tissues}")
         count = len(selected_tissues)
-        logger.info(f"Number of selected tissues: {count}")
+        logger.debug(f"Number of selected tissues: {count}")
         return str(count)
     
     @app.callback(
@@ -21,9 +21,9 @@ def register_export_callback(app, cache):
         Input("molecule-checklist", "value"),
     )
     def update_molecules_count(selected_molecules):
-        logger.info(f"Selected molecules: {selected_molecules}")
+        logger.debug(f"Selected molecules: {selected_molecules}")
         count = len(selected_molecules)
-        logger.info(f"Number of selected molecules: {count}")
+        logger.debug(f"Number of selected molecules: {count}")
         return str(count)
     
     @app.callback(

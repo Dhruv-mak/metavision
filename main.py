@@ -12,6 +12,7 @@ import threading
 from form.form_callback import register_form_callback
 from visualization.visualization_layout import get_visualization_layout
 from export.export_layout import get_export_layout
+from export.export_callback import register_export_callback
 from config import setup_logger
 
 # Initialize the root logger once
@@ -99,6 +100,7 @@ def render_tab(tab, processed):
 register_form_callback(app, cache)
 # Registering the callback for visualization
 register_visualization_callback(app, 'molecule1')
+register_export_callback(app, cache)
 
 if __name__ == "__main__":
     app.run(debug=True)

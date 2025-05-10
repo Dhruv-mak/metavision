@@ -75,7 +75,7 @@ def get_export_layout(cache):
             # Second Column Tissues
             html.Div([
                 html.Div([
-                    html.Span("Total: 10 ", className="count-label"),
+                    html.Span(f"Total: {len(tissue_list)}", className="count-label"),
                     html.Span("Selected: ", className="count-label"),
                     html.Span("0", id="tissues-selected-count", className="count-value"),
                     html.Span(" ", className="spacer"),
