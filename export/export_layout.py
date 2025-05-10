@@ -1,9 +1,22 @@
 from dash import html, dcc
+from flask import session
+import logging
+logger = logging.getLogger("metavision")
 
-def get_export_layout():
+def get_export_layout(cache):
     """
     Returns the layout for the Export sub-tab.
     """
+    logger.debug("Creating Export Layout")
+    molecule_list = cache.get(f"{session['session_id']}:molecules_list")
+    if not molecule_list:
+        logger.error("No molecules found in cache.")
+        raise ValueError("No molecules found in cache.")
+    logger.debug(f"molecule_list: {molecule_list}")
+    tissue_list = cache.get(f"{session['session_id']}:tissue_ids")
+    if not tissue_list:
+        logger.error("No tissues found in cache.")
+        raise ValueError("No tissues found in cache.")
     return html.Div([
         # Normalization Selection with options inline
         html.Div([
@@ -33,7 +46,7 @@ def get_export_layout():
             # First Column (Molecules)
             html.Div([
                 html.Div([
-                    html.Span("Total: 4 ", className="count-label"),
+                    html.Span(f"Total: {len(molecule_list)}", className="count-label"),
                     html.Span("Selected: ", className="count-label"),
                     html.Span("0", id="molecules-selected-count", className="count-value"),
                     html.Span(" ", className="spacer"),
@@ -50,8 +63,8 @@ def get_export_layout():
                     dcc.Checklist(
                         id='molecule-checklist',
                         options=[
-                            {'label': f'molecule {i}', 'value': f'molecule_{i}'} 
-                            for i in range(1, 5)
+                            {'label': i, 'value': i} 
+                            for i in molecule_list
                         ],
                         value=[],
                         className="item-checklist"
@@ -59,28 +72,28 @@ def get_export_layout():
                 ], className="column-content checklist-container")
             ], className="selection-column"),
             
-            # Second Column (Numbers)
+            # Second Column Tissues
             html.Div([
                 html.Div([
                     html.Span("Total: 10 ", className="count-label"),
                     html.Span("Selected: ", className="count-label"),
-                    html.Span("0", id="numbers-selected-count", className="count-value"),
+                    html.Span("0", id="tissues-selected-count", className="count-value"),
                     html.Span(" ", className="spacer"),
                     dcc.Checklist(
-                        id='select-all-numbers',
+                        id='select-all-tissues',
                         options=[{'label': 'Select All', 'value': 'select-all'}],
                         value=[],
                         className="select-all-checkbox"
                     )
                 ], className="column-header"),
                 
-                # Scrollable list of numbers
+                # Scrollable list of tissues
                 html.Div([
                     dcc.Checklist(
-                        id='number-checklist',
+                        id='tissues-checklist',
                         options=[
-                            {'label': f'{i}', 'value': f'number_{i}'} 
-                            for i in range(1, 11)
+                            {'label': i, 'value': i} 
+                            for i in tissue_list
                         ],
                         value=[],
                         className="item-checklist"
