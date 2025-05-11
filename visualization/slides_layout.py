@@ -81,9 +81,10 @@ def get_slides_layout(cache):
                 dcc.Loading(
                     id="loading-thumbnails",
                     type="circle",
-                    children=html.Div(thumbnails, className='thumbnails-grid')
+                    children=html.Div(thumbnails, className='thumbnails-grid', id='thumbnails-grid'),
+                    overlay_style={"visibility":"visible", "filter": "blur(2px)"}
                 )
-            ], className='thumbnails-column', id='thumbnails-column'),
+            ], className='thumbnails-column'),
             
             # Right column - Selected image with loading spinner
             html.Div([

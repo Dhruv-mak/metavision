@@ -8,7 +8,7 @@ import numpy as np
 
 def register_slides_callback(app, cache):
     @app.callback(
-        Output("loading-thumbnails", "children"),
+        Output("thumbnails-grid", "children"),
         Input("colormap-selection", "value"),
         prevent_initial_call=True,
     )
@@ -51,4 +51,6 @@ def register_slides_callback(app, cache):
                 )
             )
             
-        return html.Div(thumbnails, className='thumbnails-grid')
+        return thumbnails
+    
+    
