@@ -3,10 +3,14 @@ from flask import session
 import math
 import numpy as np
 import plotly.graph_objects as go
-import plotly.express as px
+import matplotlib.pyplot as plt
 import io
 import base64
 from PIL import Image
+import matplotlib
+
+# Set matplotlib to use a backend that doesn't require a display
+matplotlib.use('Agg')
 
 def get_slides_layout(cache):
     """
@@ -18,42 +22,39 @@ def get_slides_layout(cache):
         raise ValueError("No compound matrix found in cache.")
     
     slices, rows, cols = compound_matrix.shape
-    N = round(math.sqrt(slices))
     vmax = np.percentile(compound_matrix[compound_matrix != 0], 99)
     
-    # Create thumbnail figures
+    # Create thumbnail static images
     thumbnails = []
     for i in range(slices):
-        fig = go.Figure()
-        fig.add_trace(
-            go.Heatmap(
-                z=compound_matrix[i],
-                colorscale='Viridis',
-                showscale=False,
-                zmin=0,
-                zmax=vmax
-            )
-        )
-        fig.update_layout(
-            margin=dict(l=0, r=0, t=0, b=0),
-            paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(0,0,0,0)',
-            xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-            yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-            height=120,
-            width=120,
-        )
+        # Generate static image using matplotlib - adjust figure settings
+        fig, ax = plt.subplots(figsize=(2, 2), dpi=80)
+        ax.imshow(compound_matrix[i], cmap='viridis', vmin=0, vmax=vmax)
+        ax.axis('off')
+        
+        # Remove all padding and whitespace
+        fig.subplots_adjust(0, 0, 1, 1)  # left, bottom, right, top
+        fig.tight_layout(pad=0)
+        
+        # Convert matplotlib figure to base64 encoded PNG
+        buf = io.BytesIO()
+        fig.savefig(buf, format='png', transparent=True, 
+                    bbox_inches='tight', pad_inches=0, 
+                    facecolor='none', edgecolor='none')
+        plt.close(fig)  # Close figure to free memory
+        buf.seek(0)
+        img_str = base64.b64encode(buf.read()).decode('ascii')
         
         thumbnails.append(
-            html.Div([
-                dcc.Graph(
-                    figure=fig,
-                    config={'displayModeBar': False},
-                    id=f'thumbnail-{i}',
-                    className='slide-thumbnail'
+            html.Div(
+                html.Img(
+                    src=f"data:image/png;base64,{img_str}",
+                    id=f'thumbnail-img-{i}',
+                    className='slide-thumbnail-image'
                 ),
-                html.Div(f"Slice {i+1}", className='thumbnail-label')
-            ], className='thumbnail-container', id=f'thumbnail-container-{i}')
+                className='thumbnail-container', 
+                id=f'thumbnail-container-{i}'
+            )
         )
 
     return html.Div([
@@ -68,7 +69,8 @@ def get_slides_layout(cache):
                     {'label': 'Grayscale', 'value': 'gray'}
                 ],
                 value='viridis',
-                className="colormap-radio"
+                className="colormap-radio",
+                inline=True
             )
         ], className="slides-controls"),
         
@@ -81,7 +83,7 @@ def get_slides_layout(cache):
                     type="circle",
                     children=html.Div(thumbnails, className='thumbnails-grid')
                 )
-            ], className='thumbnails-column'),
+            ], className='thumbnails-column', id='thumbnails-column'),
             
             # Right column - Selected image with loading spinner
             html.Div([

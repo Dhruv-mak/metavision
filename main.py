@@ -12,6 +12,7 @@ import threading
 from form.form_callback import register_form_callback
 from visualization.visualization_layout import get_visualization_layout
 from visualization.slides_callback import register_slides_callback
+from visualization.threed_callback import register_3d_callback
 from export.export_layout import get_export_layout
 from export.export_callback import register_export_callback
 from config import setup_logger
@@ -100,9 +101,10 @@ def render_tab(tab, processed):
 # Registering the callback for the tabs
 register_form_callback(app, cache)
 # Registering the callback for visualization
-register_visualization_callback(app, 'molecule1')
+register_visualization_callback(app, cache)
 register_export_callback(app, cache)
 register_slides_callback(app, cache)
+register_3d_callback(app, cache)
 
 if __name__ == "__main__":
     app.run(debug=True)
