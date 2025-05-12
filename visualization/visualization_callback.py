@@ -7,6 +7,8 @@ from form.form_callback import normalize, align, impute_mat, interpolate_mat
 from flask import session
 import dash
 import logging
+import os
+import numpy as np
 
 logger = logging.getLogger('metavision')
 
@@ -21,6 +23,39 @@ def register_visualization_callback(app, cache):
         ctx = dash.callback_context
         triggered_id = ctx.triggered_id
         logger.info(f"The triggered id is:{triggered_id}")
+        
+        if triggered_id == "column-selector":
+            filename = cache.get(f"{session["session_id"]}:filename")
+            if not filename:
+                return html.Div("Error: Filename not available", className="error-message")
+            if not os.path.exists(os.path.join("workspaces", filename.replace(".csv", ".npy"))):
+                return html.Div("Error: Warp Matrix File not found", className="error-message")
+            warp_matrix = np.load(os.path.join("workspaces", filename.replace(".csv", ".npy")))
+            df = cache.get(f"{session['session_id']}:df")
+            if df is None:
+                return html.Div("Error: Data not available", className="error-message")
+            molecules_list = cache.get(f"{session['session_id']}:molecules_list")
+            if molecules_list is None:
+                return html.Div("Error: Molecule list not available", className="error-message")
+            df, compound_matrix = normalize(
+                molecule, df, molecules_list, filename, cache
+            )
+            compound_matrix = align(molecule, df, molecules_list, filename, warp_matrix, cache)
+            interpolate = cache.get(f"{session["session_id"]}:interpolate")
+            impute = cache.get(f"{session["session_id"]}:impute")
+            radius = cache.get(f"{session["session_id"]}:radius")
+            slices = cache.get(f"{session["session_id"]}:slices")
+            if interpolate == [] and impute == []:
+                logger.info("No interpolation or imputation selected.")
+                cache.set(f"{session['session_id']}:compound_matrix", compound_matrix)
+            else:
+                if impute != []:
+                    logger.info("Imputation selected.")
+                    compound_matrix = impute_mat(radius, compound_matrix)
+                if interpolate != []:
+                    logger.info("Interpolation selected.")
+                    compound_matrix = interpolate_mat(slices, compound_matrix)
+                cache.set(f"{session['session_id']}:compound_matrix", compound_matrix)
             
         if not viz_type:
             return html.Div(
@@ -42,43 +77,3 @@ def register_visualization_callback(app, cache):
             return html.Div(
                 "Unknown visualization type selected.", className="error-message"
             )
-
-    @app.callback(
-        Output("visualization-type", "value"),
-        Input("column-selector", "value"),
-        State("visualization-type", "value"),
-        prevent_initial_call=True,
-    )
-    def update_molecule_selection(
-        selected_molecule, viz_type
-    ):
-        warp_matrix = cache.get(f"{session['session_id']}:warp_matrix")
-        if warp_matrix is None:
-            return html.Div("Error: Data not available", className="error-message")
-        df = cache.get(f"{session['session_id']}:df")
-        if df is None:
-            return html.Div("Error: Data not available", className="error-message")
-        molecules_list = cache.get(f"{session['session_id']}:molecules_list")
-        filename = cache.get(f"{session["session_id"]}:filename")
-        if molecules_list is None:
-            return html.Div("Error: Data not available", className="error-message")
-        df, compound_matrix = normalize(
-            selected_molecule, df, molecules_list, filename, cache
-        )
-        compound_matrix = align(selected_molecule, df, molecules_list, filename, cache)
-        interpolate = cache.get(f"{session["session_id"]}:interpolate")
-        impute = cache.get(f"{session["session_id"]}:impute")
-        radius = cache.get(f"{session["session_id"]}:radius")
-        slices = cache.get(f"{session["session_id"]}:slices")
-        if interpolate == [] and impute == []:
-            logger.info("No interpolation or imputation selected.")
-            cache.set(f"{session['session_id']}:compound_matrix", compound_matrix)
-        else:
-            if impute != []:
-                logger.info("Imputation selected.")
-                compound_matrix = impute_mat(radius, compound_matrix)
-            if interpolate != []:
-                logger.info("Interpolation selected.")
-                compound_matrix = interpolate_mat(slices, compound_matrix)
-            cache.set(f"{session['session_id']}:compound_matrix", compound_matrix)
-        return viz_type
