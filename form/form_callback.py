@@ -174,7 +174,7 @@ def register_form_callback(app, cache):
                     os.path.join("workspaces", filename.replace(".csv", ".npy"))
                 )
             else:
-                logger.info("Most prevalent compound: ", ref_coumpound)
+                logger.info(f"Most prevalent compound: {ref_coumpound}")
                 try:
                     logger.info("Creating reference compound matrix...")
                     ref_compound_matrix = create_compound_matrix(
