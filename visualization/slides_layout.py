@@ -1,6 +1,5 @@
 from dash import dcc, html
 from flask import session
-import math
 import numpy as np
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
@@ -49,8 +48,10 @@ def get_slides_layout(cache):
             html.Div(
                 html.Img(
                     src=f"data:image/png;base64,{img_str}",
-                    id=f'thumbnail-img-{i}',
-                    className='slide-thumbnail-image'
+                    # id=f'thumbnail-img-{i}',
+                    id={'type': 'thumbnail-img', 'index': i},
+                    className='slide-thumbnail-image',
+                    key=f"{i}-viridis"
                 ),
                 className='thumbnail-container', 
                 id=f'thumbnail-container-{i}'

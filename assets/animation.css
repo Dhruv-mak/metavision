@@ -1,0 +1,68 @@
+/* Animation Layout Styling */
+.animation-container {
+    background-color: white;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    background-color: var(--dark-surface);
+    border: 1px solid #333;
+}
+
+.animation-graph {
+    width: 100%;
+    height: 700px; /* Increased height from 500px to 700px */
+    margin-bottom: 20px;
+}
+
+/* Make sure the graph container doesn't distort the aspect ratio */
+.js-plotly-plot .plot-container {
+    height: 100%;
+}
+
+.animation-controls {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: var(--dark-surface-2);
+    border-radius: var(--border-radius);
+    border: 1px solid #444;
+}
+
+.speed-slider {
+    margin-top: 10px;
+}
+
+.speed-slider .rc-slider-track {
+    background-color: var(--primary);
+}
+
+.speed-slider .rc-slider-handle {
+    border-color: var(--primary);
+    background-color: var(--primary);
+}
+
+.speed-slider .rc-slider-handle:hover {
+    border-color: var(--primary-light);
+}
+
+.speed-slider .rc-slider-handle:active {
+    border-color: var(--primary-light);
+    box-shadow: 0 0 5px var(--primary);
+}
+
+.speed-slider .rc-slider-mark-text {
+    color: var(--secondary-text);
+}
+
+/* Add responsiveness for different screen sizes */
+@media (max-width: 768px) {
+    .animation-graph {
+        height: 500px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .animation-graph {
+        height: 800px;
+    }
+}

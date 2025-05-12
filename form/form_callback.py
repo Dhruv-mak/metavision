@@ -110,6 +110,7 @@ def register_form_callback(app, cache):
         try:
             # Extract and decode file content
             logger.info(f"Processing uploaded file: {filename}")
+            cache.set(f"{session['session_id']}:filename", filename)
             content_type, content_string = contents.split(",")
             decoded = base64.b64decode(content_string)
 
@@ -210,6 +211,11 @@ def register_form_callback(app, cache):
                     logger.info("Interpolation selected.")
                     compound_matrix = interpolate_mat(slices, compound_matrix)
                 cache.set(f"{session['session_id']}:compound_matrix", compound_matrix)
+            cache.set(f"{session['session_id']}:interpolate", interpolate)
+            cache.set(f"{session['session_id']}:impute", impute)
+            cache.set(f"{session['session_id']}:slices", slices)
+            cache.set(f"{session['session_id']}:radius", radius)
+            cache.set(f"{session['session_id']}:ref_compound", ref_coumpound)
             return True, ref_coumpound
 
         except Exception as e:

@@ -70,14 +70,14 @@ def get_3d_image_layout():
                 className="action-button primary-button"
             ),
             html.Button(
-                "Save 3D Image",
+                "Download 3D Image",
                 id="save-3d-button",
                 className="action-button secondary-button"
             ),
         ], className="button-container"),
         
-        # Hidden div for folder picker dialog results
-        html.Div(id="folder-picker-output", className="hidden-element"),
+        # Download element for saving the 3D image
+        dcc.Download(id="download-3d-image"),
         
         # Container for the 3D visualization
         html.Div(id="3d-visualization-container", className="visualization-result")

@@ -1,5 +1,7 @@
 from dash import html, dcc
 from flask import session
+import logging
+logger = logging.getLogger("metavision")
 
 def get_visualization_layout(cache):
     """
@@ -7,6 +9,8 @@ def get_visualization_layout(cache):
     The column dropdown will be populated dynamically via a callback.
     """
     molecule_list = cache.get(f"{session['session_id']}:molecules_list")
+    ref_compound = cache.get(f"{session['session_id']}:ref_compound")
+    logger.info(f"ref_compound: {ref_compound}")
     return html.Div([
         html.Div([
             # Container for side-by-side dropdowns
@@ -35,6 +39,7 @@ def get_visualization_layout(cache):
                         options=[
                             {'label': molecule, 'value': molecule} for molecule in molecule_list
                         ],
+                        value=ref_compound,
                         placeholder="Select a molecule/tissue",
                         className="dropdown"
                     ),

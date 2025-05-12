@@ -166,3 +166,32 @@
     height: 350px;
   }
 }
+
+/* Add visual indicators for different colormaps */
+.colormap-viridis {
+  border: 2px solid #21908C;
+}
+
+.colormap-magma {
+  border: 2px solid #BD3786;
+}
+
+.colormap-gray {
+  border: 2px solid #666666;
+}
+
+/* When thumbnail is selected */
+.colormap-viridis.selected {
+  border-color: #21908C;
+  box-shadow: 0 0 10px #21908C;
+}
+
+.colormap-magma.selected {
+  border-color: #BD3786;
+  box-shadow: 0 0 10px #BD3786;
+}
+
+.colormap-gray.selected {
+  border-color: #cccccc;
+  box-shadow: 0 0 10px #cccccc;
+}
