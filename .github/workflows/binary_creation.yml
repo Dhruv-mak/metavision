@@ -23,7 +23,7 @@ jobs:
 
 
       - name: Build executable
-        run: pyinstaller --clen metavision.spec
+        run: uv run pyinstaller --clen metavision.spec
     
       - name: Upload artifact
         uses: actions/upload-artifact@v4
