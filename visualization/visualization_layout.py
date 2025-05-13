@@ -46,6 +46,12 @@ def get_visualization_layout(cache):
                 ], className="dropdown-container"),
             ], className="dropdowns-row"),
             
-            html.Div(id='visualization-output', className="visualization-container")
+            dcc.Loading(
+                id="loading-visualization",
+                type="circle",
+                color="#00BCD4",  # Match your primary color
+                children=html.Div(id='visualization-output', className="visualization-container"),
+                overlay_style={"visibility": "visible", "filter": "blur(2px)", "background": "rgba(0,0,0,0.3)"}
+            )
         ], className="visualization-controls")
     ], className="visualization-layout")
