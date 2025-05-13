@@ -9,7 +9,7 @@ def get_layout():
         
         # File Upload Section
         html.Div([
-            html.H3("Step 1: Upload Data", className="section-title"),
+            html.H3("Upload Data", className="section-title"),
             dcc.Upload(
                 id='upload-data',
                 children=html.Div([
@@ -27,7 +27,7 @@ def get_layout():
         
         # Interpolate Section
         html.Div([
-            html.H3("Step 2: Interpolate", className="section-title"),
+            html.H3("Interpolate", className="section-title"),
             dcc.Checklist(
                 id='interpolate-checkbox',
                 options=[{'label': 'Run Interpolation', 'value': 'interpolate'}],
@@ -50,7 +50,7 @@ def get_layout():
         
         # Impute Section
         html.Div([
-            html.H3("Step 3: Impute", className="section-title"),
+            html.H3("Impute", className="section-title"),
             dcc.Checklist(
                 id='impute-checkbox',
                 options=[{'label': 'Run Imputation', 'value': 'impute'}],

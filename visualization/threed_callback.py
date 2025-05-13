@@ -49,156 +49,106 @@ def create_nii(matrix, resolution, thickness, gap, insert=0):
 
 def create_3d_figure(compound_matrix, projection_type, thickness, gap, max_projection):
     """
-    Creates a 3D visualization figure using Plotly with inverted grayscale and no grid
+    Creates a 3D point cloud visualization with proper slice thickness and gaps
     """
     slices, rows, cols = compound_matrix.shape
     
     # Apply maximum intensity projection if selected
     if projection_type == 'maximum':
-        # Apply maximum projection with the selected percentile
-        threshold = np.percentile(compound_matrix, max_projection)
-        volume_data = np.where(compound_matrix > threshold, compound_matrix, 0)
+        threshold = np.percentile(compound_matrix, max_projection) / 100
     else:
-        volume_data = compound_matrix
+        threshold = 0.15
     
-    # Create x, y, z coordinates for the volume
-    x = np.linspace(0, cols-1, cols)
-    y = np.linspace(0, rows-1, rows)
-    z = np.linspace(0, slices-1, slices)
-    
-    # Account for thickness and gap
-    z = z * (thickness + gap)
-    
-    # Create a figure for 3D volume
-    fig = go.Figure()
-    
-    # Normalize data for better visualization
-    max_val = np.max(volume_data)
+    # Normalize data
+    max_val = np.max(compound_matrix)
     if max_val > 0:
-        normalized_data = volume_data / max_val
+        normalized_data = compound_matrix / max_val
     else:
-        normalized_data = volume_data
+        normalized_data = compound_matrix
     
-    # Create inverted grayscale colormap (high intensity = dark)
-    # White (0) to black (1)
-    custom_colorscale = [
-        [0, 'rgb(255, 255, 255)'],  # White for low values
-        [1, 'rgb(0, 0, 0)']          # Black for high values
-    ]
+    # For point cloud with true thickness, we need to create multiple z-positions for each slice
+    points_x = []
+    points_y = []
+    points_z = []
+    point_values = []
     
-    # Iterate through slices to create surfaces
-    for i in range(slices):
-        # Create 3D surface with inverted grayscale coloring and no grid
-        fig.add_trace(go.Surface(
-            z=np.ones((rows, cols)) * z[i],
-            x=x,
-            y=y,
-            surfacecolor=normalized_data[i],
-            colorscale=custom_colorscale,  # Inverted grayscale
-            opacity=0.9,  # Slightly higher opacity for better visibility
-            showscale=(i == 0),  # Only show colorbar for the first surface
-            colorbar=dict(
-                title=dict(
-                    text='Intensity',
-                    font=dict(color='white')
-                ),
-                tickfont=dict(color='white')
-            ),
-            # Remove all contours/grid lines
-            contours=dict(
-                x=dict(show=False),
-                y=dict(show=False),
-                z=dict(show=False)
-            ),
-            lighting=dict(
-                ambient=0.7,    # Increased ambient light for better visibility
-                diffuse=0.9,    # Increased diffuse light
-                fresnel=0.1,    # Reduced fresnel effect further
-                specular=0.3,   # Reduced specular highlights
-                roughness=0.7   # Increased roughness for less shiny appearance
-            )
-        ))
+    # Identify points above threshold
+    for z_idx in range(slices):
+        slice_data = normalized_data[z_idx]
+        mask = slice_data > threshold
+        y_coords, x_coords = np.nonzero(mask)
+        values = slice_data[mask]
+        
+        if len(x_coords) > 0:
+            # Calculate base z position for this slice
+            base_z = z_idx * (1 + gap)  # Base position with gap
+            
+            # For each point in this slice, create multiple points through the thickness
+            if thickness <= 1:
+                # For thickness <= 1, just use a single layer of points
+                points_x.extend(x_coords)
+                points_y.extend(y_coords)
+                points_z.extend([base_z] * len(x_coords))
+                point_values.extend(values)
+            else:
+                # For thickness > 1, create multiple z-layers to represent thickness
+                # Number of layers based on thickness (at least 2 for thickness > 1)
+                num_layers = max(2, int(thickness))
+                
+                # Create points at different z-positions within the slice thickness
+                for layer in range(num_layers):
+                    z_pos = base_z + (layer * (thickness / num_layers))
+                    points_x.extend(x_coords)
+                    points_y.extend(y_coords)
+                    points_z.extend([z_pos] * len(x_coords))
+                    point_values.extend(values)
     
-    # Update layout
+    # Convert to numpy arrays
+    points_x = np.array(points_x)
+    points_y = np.array(points_y)
+    points_z = np.array(points_z)
+    point_values = np.array(point_values)
+    
+    # Limit points if necessary to avoid browser performance issues
+    max_points = 100000
+    if len(points_x) > max_points:
+        indices = np.random.choice(len(points_x), max_points, replace=False)
+        points_x = points_x[indices]
+        points_y = points_y[indices]
+        points_z = points_z[indices]
+        point_values = point_values[indices]
+    
+    # Create the figure with point cloud
+    fig = go.Figure(data=go.Scatter3d(
+        x=points_x, y=points_y, z=points_z,
+        mode='markers',
+        marker=dict(
+            size=2,
+            color=point_values,
+            colorscale='Greys_r',
+            opacity=0.8
+        ),
+        hoverinfo='none'
+    ))
+    
+    # Clean layout with no axes or borders
     fig.update_layout(
-        title={
-            'text': '3D Brain Visualization',
-            'font': {'color': 'white', 'size': 18},
-            'y': 0.95,
-        },
         scene=dict(
-            xaxis=dict(
-                title='X',
-                backgroundcolor='rgba(0,0,0,0)',
-                gridcolor='grey',
-                showbackground=True,
-                zerolinecolor='white',
-                showspikes=False,
-                showgrid=False,  # Hide grid
-                zeroline=False,  # Hide zero line
-            ),
-            yaxis=dict(
-                title='Y',
-                backgroundcolor='rgba(0,0,0,0)',
-                gridcolor='grey',
-                showbackground=True,
-                zerolinecolor='white',
-                showspikes=False,
-                showgrid=False,  # Hide grid
-                zeroline=False,  # Hide zero line
-            ),
-            zaxis=dict(
-                title='Z',
-                backgroundcolor='rgba(0,0,0,0)',
-                gridcolor='grey',
-                showbackground=True,
-                zerolinecolor='white',
-                showspikes=False,
-                showgrid=False,  # Hide grid
-                zeroline=False,  # Hide zero line
-            ),
+            xaxis=dict(visible=False, showbackground=False),
+            yaxis=dict(visible=False, showbackground=False),
+            zaxis=dict(visible=False, showbackground=False),
             aspectmode='data',
             camera=dict(
-                eye=dict(x=1.5, y=1.5, z=1.2)  # Adjusted camera angle for better view
-            ),
+                eye=dict(x=1.5, y=1.5, z=1.2)
+            )
         ),
-        height=700,
+        margin=dict(r=0, l=0, b=0, t=0),
         paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(0,0,0,0)',
-        font=dict(color='white'),
-        margin=dict(l=0, r=0, b=0, t=50),
-        updatemenus=[{
-            'buttons': [
-                {
-                    'args': ['scene.camera.eye', {'x': 1.5, 'y': 1.5, 'z': 1.2}],
-                    'label': 'Default View',
-                    'method': 'relayout'
-                },
-                {
-                    'args': ['scene.camera.eye', {'x': 0, 'y': 0, 'z': 2.5}],
-                    'label': 'Top View',
-                    'method': 'relayout'
-                },
-                {
-                    'args': ['scene.camera.eye', {'x': 2.5, 'y': 0, 'z': 0}],
-                    'label': 'Side View',
-                    'method': 'relayout'
-                }
-            ],
-            'direction': 'down',
-            'pad': {'r': 10, 't': 10},
-            'showactive': True,
-            'type': 'buttons',
-            'x': 0.9,
-            'y': 1.1,
-            'xanchor': 'right',
-            'yanchor': 'top',
-            'bgcolor': 'rgba(45, 45, 45, 0.8)',
-            'font': {'color': 'white'}
-        }]
+        plot_bgcolor='rgba(0,0,0,0)'
     )
     
     return fig
+
 def register_3d_callback(app, cache):
     # Callback to show/hide the max projection dropdown based on projection type selection
     @app.callback(
