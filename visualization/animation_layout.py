@@ -125,6 +125,22 @@ def get_animation_layout(cache):
         html.P("Navigate through slices of data using the slider below. Each slice is shown as a heatmap with magma colormap.", 
                className="section-description"),
         
+        dcc.RadioItems(
+            id="colormap-selection-animation",
+            options=[
+                {'label': 'Viridis', 'value': 'viridis'},
+                {'label': 'Magma', 'value': 'magma'},
+                {'label': 'Plasma', 'value': 'plasma'},
+                {'label': 'Cividis', 'value': 'cividis'}
+            ],
+            value='magma',
+            className="colormap-selection",
+            inputClassName="radio-input",
+            labelClassName="radio-label",
+            inputStyle={"margin-right": "5px"},
+            labelStyle={"display": "inline-flex", "align-items": "center", "margin-right": "20px"},
+        ),
+        
         # Main graph
         dcc.Graph(
             id="animation-graph",

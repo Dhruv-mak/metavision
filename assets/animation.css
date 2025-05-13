@@ -54,6 +54,130 @@
     color: var(--secondary-text);
 }
 
+/* RadioItems styling for colormap selection */
+.colormap-selection {
+    background-color: var(--dark-surface-2);
+    padding: 15px 20px;
+    border-radius: var(--border-radius);
+    border: 1px solid #444;
+    margin: 15px 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* Label style before the radio buttons */
+.colormap-selection::before {
+    content: 'Colormap:';
+    color: var(--secondary-text);
+    font-weight: 500;
+    margin-right: 15px;
+    padding-right: 15px;
+    border-right: 1px solid #444;
+}
+
+/* Radio input styling */
+.colormap-selection .radio-item {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+/* Custom radio button style */
+.colormap-selection input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    outline: none;
+    border: 2px solid #555;
+    background-color: var(--dark-surface);
+    margin-right: 8px;
+    cursor: pointer;
+    position: relative;
+}
+
+/* Radio checked state */
+.colormap-selection input[type="radio"]:checked {
+    border-color: var(--primary);
+}
+
+/* Radio checked dot */
+.colormap-selection input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--primary);
+}
+
+/* Radio hover state */
+.colormap-selection input[type="radio"]:hover {
+    border-color: var(--primary-light);
+    box-shadow: 0 0 5px rgba(0, 188, 212, 0.2);
+}
+
+/* Radio label styling */
+.colormap-selection .radio-item label {
+    color: var(--light-text);
+    cursor: pointer;
+}
+
+/* Colormap indicator dots */
+.colormap-selection .radio-item label::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+/* Specific colormap indicator colors */
+.colormap-selection .radio-item:nth-child(1) label::before {
+    background: linear-gradient(90deg, #440154, #414487, #2a788e, #22a884, #7ad151, #fde725);
+}
+
+.colormap-selection .radio-item:nth-child(2) label::before {
+    background: linear-gradient(90deg, #000004, #1b0c41, #4a0c6b, #781c6d, #a52c60, #cf4446, #ed7953, #fdb32f, #f7f056);
+}
+
+.colormap-selection .radio-item:nth-child(3) label::before {
+    background: linear-gradient(90deg, #0d0887, #42039d, #6a00a8, #900da4, #b12a90, #cb4778, #e16462, #f1844b, #fca636, #fcce25);
+}
+
+.colormap-selection .radio-item:nth-child(4) label::before {
+    background: linear-gradient(90deg, #002051, #0a326a, #1a4a8c, #3160a7, #447cbb, #4f92c3, #95c4dd, #d4e8f5);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .colormap-selection {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px;
+    }
+    
+    .colormap-selection::before {
+        margin-bottom: 10px;
+        padding-right: 0;
+        padding-bottom: 10px;
+        border-right: none;
+        border-bottom: 1px solid #444;
+        width: 100%;
+    }
+    
+    .colormap-selection .radio-item {
+        margin: 8px 0;
+    }
+}
+
 /* Add responsiveness for different screen sizes */
 @media (max-width: 768px) {
     .animation-graph {
