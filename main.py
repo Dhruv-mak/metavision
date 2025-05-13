@@ -45,15 +45,7 @@ def ensure_user_workspace():
     """Ensure that the user workspace exists."""
     if "session_id" not in session:
         session["session_id"] = uuid.uuid4().hex
-    os.mkdir("workspaces") if not os.path.exists("workspaces") else None    
-    user_id = session["session_id"]
-    work_dir = os.path.join("workspaces", user_id)
-    if not os.path.exists(work_dir):
-        # Create the directory if it doesn't exist
-        logger.info(f"Creating workspace directory: {work_dir}")
-        os.makedirs(work_dir, exist_ok=True)
-    
-    g.work_dir = work_dir
+    os.mkdir("workspaces") if not os.path.exists("workspaces") else None
 
 app.layout = html.Div([
     html.H1("MetaVision Data Processing", className="app-title"),
