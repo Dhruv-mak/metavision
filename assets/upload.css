@@ -127,3 +127,39 @@
   color: var(--secondary-text);
   font-size: 0.9rem;
 }
+
+.processing-status {
+  margin-top: 15px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Success message styling */
+.success-message {
+  display: flex;
+  align-items: center;
+  color: #4caf50;
+  padding: 10px 15px;
+  background-color: rgba(76, 175, 80, 0.1);
+  border-radius: var(--border-radius);
+  font-weight: 500;
+}
+
+.success-icon {
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+
+/* Loading spinner customization */
+._dash-loading {
+  border-color: var(--primary) !important;
+}
+
+/* Make loading spinner more visible against dark background */
+._dash-loading-callback {
+  border: 3px solid rgba(0, 188, 212, 0.2);
+  border-top-color: var(--primary);
+  border-left-color: var(--primary);
+}
