@@ -73,7 +73,20 @@ def get_layout():
         
         # Run Button
         html.Div([
-            html.Button('Run', id='run-button', n_clicks=0, className="run-button")
+            html.Button(
+                "Run Processing",
+                id="run-button",
+                className="run-button"
+            ),
+            # Add this loading indicator right after the run button
+            dcc.Loading(
+                id="loading-form",
+                type="circle",
+                color="#00BCD4",  # This should match your --primary color
+                children=[
+                    html.Div(id="loading-output", className="processing-status")
+                ]
+            )
         ], className="button-container"),
         
     ], className="app-container")

@@ -1,4 +1,4 @@
-from dash import Output, Input, State
+from dash import Output, Input, State, html
 import logging
 import os
 import pandas as pd
@@ -78,7 +78,9 @@ def register_form_callback(app, cache):
     """
 
     @app.callback(
-        [Output("processed", "data"), Output("molecule", "data")],
+        [Output("processed", "data"), 
+        Output("molecule", "data"), 
+        Output("loading-output", "children")],  # Added this output
         [Input("run-button", "n_clicks")],
         [
             State("upload-data", "contents"),
@@ -105,7 +107,10 @@ def register_form_callback(app, cache):
         # Check if a file was uploaded
         if contents is None:
             logger.warning("No file uploaded.")
-            return False, ""
+            return False, "", html.Div([
+                html.I(className="fas fa-exclamation-circle error-icon"),
+                html.Span("Run the pipeline after uploading a file.")
+            ], className="error-message")
 
         try:
             # Extract and decode file content
@@ -119,7 +124,10 @@ def register_form_callback(app, cache):
                 logger.error(
                     f"Unsupported file type: {content_type}. Only CSV files are supported."
                 )
-                return False, ""
+                return False, "", html.Div([
+                    html.I(className="fas fa-exclamation-circle error-icon"),
+                    html.Span("Unsupported file type. Please upload a CSV file.")
+                ], className="error-message")
 
             # Parse CSV data
             logger.info("Parsing CSV data...")
@@ -132,7 +140,10 @@ def register_form_callback(app, cache):
             # Ensure 'tissue_id' column exists
             if "tissue_id" not in df.columns:
                 logger.error("CSV file must contain a 'tissue_id' or 'region' column.")
-                return False, ""
+                return False, "", html.Div([
+                    html.I(className="fas fa-exclamation-circle error-icon"),
+                    html.Span("CSV file must contain a 'tissue_id' or 'region' column.")
+                ], className="error-message")
 
             # Extract tissue IDs
             tissue_ids = df["tissue_id"].unique().tolist()
@@ -189,7 +200,10 @@ def register_form_callback(app, cache):
                     )
                 except Exception as e:
                     logger.error(f"Error creating warp matrix: {str(e)}")
-                    return False, ""
+                    return False, "", html.Div([
+                        html.I(className="fas fa-exclamation-circle error-icon"),
+                        html.Span(f"Error creating warp matrix: {str(e)}")
+                    ], className="error-message")
 
             logger.info("Starting to load DataFrame into NumPy arrays...")
 
@@ -216,8 +230,37 @@ def register_form_callback(app, cache):
             cache.set(f"{session['session_id']}:slices", slices)
             cache.set(f"{session['session_id']}:radius", radius)
             cache.set(f"{session['session_id']}:ref_compound", ref_coumpound)
-            return True, ref_coumpound
+            return True, ref_coumpound, html.Div([
+                html.I(className="fas fa-check-circle success-icon"),
+                html.Span("Processing completed successfully!")
+            ], className="success-message")
 
         except Exception as e:
             logger.error(f"Error processing uploaded file: {str(e)}")
-            return False, ""
+            # Error case
+            return False, "", html.Div([
+                html.I(className="fas fa-exclamation-circle error-icon"),
+                html.Span(f"Error: {str(e)}")
+            ], className="error-message")
+            
+    @app.callback(
+        Output("upload-output", "children"),
+        Input("upload-data", "contents"),
+        State("upload-data", "filename"),
+        prevent_initial_call=True
+    )
+    def update_upload_status(contents, filename):
+        if contents is None:
+            return html.Div("")
+        
+        # If a file is uploaded, show a success message with file details
+        return html.Div([
+            html.Div([
+                html.I(className="fas fa-check-circle success-icon"),
+                html.Span("File uploaded successfully:", className="upload-status-title")
+            ], className="upload-status-header"),
+            html.Div([
+                html.I(className="fas fa-file-csv file-icon"),
+                html.Span(filename, className="filename")
+            ], className="file-details")
+        ], className="upload-success")
