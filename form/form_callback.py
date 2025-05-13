@@ -58,7 +58,7 @@ def align(molecule, df, molecule_list, filename, warp_matrix, cache):
 
 def impute_mat(radius, compound_matrix):
     logger.info("Imputing molecule data...")
-    meta_impute = MetaImpute3D(create_compound_matrix, radius)
+    meta_impute = MetaImpute3D(compound_matrix, radius)
     logger.info("MetaImpute3D is completed")
     compound_matrix = meta_impute.seq_impute()
     logger.info(f"Sum of compound_matrix: {compound_matrix.sum()}")
